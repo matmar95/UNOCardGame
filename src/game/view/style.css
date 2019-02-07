@@ -1,7 +1,13 @@
 #root {
     -fx-background-image: url("../../image_assets/board.png");
     -fx-background-repeat: stretch;
+    -fx-background-color: transparent;
     -fx-background-size: 100% 100%;
     -fx-background-position: center center;
     -fx-effect: dropshadow(three-pass-box, black, 30, 0.5, 0, 0);
 }
+
+#logo{
+    -fx-image: url("../../image_assets/icon.png");
+}
+
