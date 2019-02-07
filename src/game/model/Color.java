@@ -1,5 +1,5 @@
 package game.model;
 
-public enum CardColor {
+public enum Color {
     NONE, RED, GREEN, YELLOW, BLUE;
 }
