@@ -18,7 +18,7 @@ import utils.NetworkUtils;
 import java.io.File;
 import java.io.IOException;
 
-public class Controller {
+public class UIController {
 
     @FXML
     TextField userField;

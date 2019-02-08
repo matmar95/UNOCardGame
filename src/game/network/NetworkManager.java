@@ -1,5 +1,7 @@
 package game.network;
 
+import game.controller.GameController;
+import game.controller.UIController;
 import utils.NetworkUtils;
 
 import java.net.MalformedURLException;
@@ -26,7 +28,21 @@ public class NetworkManager {
 
         PlayerNode myNode = new PlayerNode(username,ipAddress, port);
         nodes.put(myNetworkAddress,myNode);
-
+        try {
+            java.rmi.registry.LocateRegistry.createRegistry(port);
+            //LOG.info("RMI registry ready");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        try {
+           // Naming.rebind("//" + myNetworkAddress + "/ClusterServicesRemote", new ClusterServices());
+            Naming.rebind("//" + myNetworkAddress + "/GameControllerRemote", new GameController());
+            //LOG.info("RMI Bind ready");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
     }
 }
