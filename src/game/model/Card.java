@@ -12,7 +12,7 @@ public class Card extends Parent implements Serializable {
     private Type type;
     private String imgPath;
 
-    public Card(int number, Color color, Type type, double resize) {
+    public Card(int number, Color color, Type type) {
         //Card info
         this.number = number;
         this.color = color;

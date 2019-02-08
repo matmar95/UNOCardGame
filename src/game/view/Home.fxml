@@ -12,7 +12,7 @@
       <ImageView fx:id="logo" fitHeight="303.0" fitWidth="397.0" layoutX="202.0" layoutY="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
       <Pane fx:id="joinPane" layoutX="239.0" layoutY="387.0" prefHeight="170.0" prefWidth="323.0" visible="false">
          <children>
-            <Button fx:id="connectButton" layoutX="85.0" layoutY="113.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="153.0" text="Connect" textAlignment="CENTER">
+            <Button fx:id="connectButton" layoutX="85.0" layoutY="113.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="153.0" text="Ready" textAlignment="CENTER">
                <font>
                   <Font name="Arial Rounded MT Bold" size="22.0" />
                </font>

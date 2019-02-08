@@ -1,6 +1,9 @@
 package game.model;
 
+import sun.security.provider.NativePRNG;
+
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Deck {
     private static Deck instance = new Deck();
@@ -9,10 +12,11 @@ public class Deck {
         return instance;
     }
 
+    private ArrayList<Card> deck;
 
-    private ArrayList<Card> deck = new ArrayList<>();
-
-    private void generateDeck(){
-
+    private Deck(){
+        this.deck = new ArrayList<>();
     }
+
+
 }

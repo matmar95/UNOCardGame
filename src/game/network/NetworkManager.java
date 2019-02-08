@@ -10,16 +10,19 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 
 public class NetworkManager {
-    private NetworkManager() {
-        this.nodes = new HashMap<>();
-    }
     private static NetworkManager ourInstance = new NetworkManager();
 
     public static NetworkManager getInstance() {
         return ourInstance;
     }
-    private String myNetworkAddress;
+
     private final HashMap<String, PlayerNode> nodes;
+
+    private NetworkManager() {
+        this.nodes = new HashMap<>();
+    }
+
+    private String myNetworkAddress;
 
     public void initialize(String username) {
         final String ipAddress = NetworkUtils.getIpAddress();
@@ -35,7 +38,7 @@ public class NetworkManager {
             e.printStackTrace();
         }
         try {
-           // Naming.rebind("//" + myNetworkAddress + "/ClusterServicesRemote", new ClusterServices());
+            Naming.rebind("//" + myNetworkAddress + "/ClusterServicesRemote", new ClusterServices());
             Naming.rebind("//" + myNetworkAddress + "/GameControllerRemote", new GameController());
             //LOG.info("RMI Bind ready");
         } catch (RemoteException e) {
