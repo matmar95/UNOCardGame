@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-<BorderPane fx:id="gameroot" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.202" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="gameroot" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <Pane fx:id="player" prefHeight="420.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
    </left>
    <right>
       <Pane fx:id="other_player" prefHeight="420.0" prefWidth="150.0" BorderPane.alignment="CENTER" />
    </right>
-   <bottom>
-      <Pane fx:id="hand" prefHeight="180.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
-   </bottom>
    <center>
       <Pane fx:id="deck" prefHeight="417.0" prefWidth="547.0" BorderPane.alignment="CENTER" />
    </center>
    <top>
       <Pane fx:id="empty" prefHeight="0.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
    </top>
+   <bottom>
+      <ScrollPane opacity="0.0" prefHeight="203.0" prefWidth="800.0" BorderPane.alignment="CENTER" />
+   </bottom>
 </BorderPane>

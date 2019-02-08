@@ -7,40 +7,69 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="game.controller.Controller">
+<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.controller.Controller">
    <children>
-      <ImageView fx:id="logo" fitHeight="303.0" fitWidth="397.0" layoutX="202.0" layoutY="61.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
-      <TextField fx:id="userField" layoutX="300.0" layoutY="315.0" prefHeight="35.0" prefWidth="200.0" promptText="Username">
+      <ImageView fx:id="logo" fitHeight="303.0" fitWidth="397.0" layoutX="202.0" layoutY="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
+      <Pane fx:id="joinPane" layoutX="239.0" layoutY="387.0" prefHeight="170.0" prefWidth="323.0" visible="false">
+         <children>
+            <Button fx:id="connectButton" layoutX="85.0" layoutY="113.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="153.0" text="Connect" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="22.0" />
+               </font>
+            </Button>
+            <TextField fx:id="ipField" layoutX="85.0" layoutY="23.0" prefHeight="35.0" prefWidth="153.0" promptText="Ip">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="32.0" prefHeight="17.0" prefWidth="77.0" text="Ip Address" textAlignment="RIGHT" textFill="#f2eaea">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="portField" layoutX="85.0" layoutY="61.0" prefHeight="35.0" prefWidth="153.0" promptText="Port">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </TextField>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="37.0" layoutY="70.0" prefHeight="17.0" prefWidth="37.0" text="Port" textAlignment="RIGHT" textFill="#f2eaea">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <TextField fx:id="userField" layoutX="324.0" layoutY="266.0" prefHeight="35.0" prefWidth="153.0" promptText="Username">
          <font>
             <Font name="Arial Rounded MT Bold" size="14.0" />
          </font></TextField>
-      <TextField fx:id="ipField" layoutX="300.0" layoutY="371.0" prefHeight="35.0" prefWidth="200.0" promptText="IP">
+      <Pane fx:id="createPane" layoutX="248.0" layoutY="387.0" prefHeight="170.0" prefWidth="310.0" visible="false">
+         <children>
+            <Button fx:id="startButton2" layoutX="77.0" layoutY="113.0" mnemonicParsing="false" onAction="#startGame" prefHeight="43.0" prefWidth="153.0" text="Start" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="18.0" />
+               </font>
+            </Button>
+            <Label fx:id="createLabel" alignment="TOP_LEFT" layoutX="4.0" layoutY="14.0" prefHeight="88.0" prefWidth="299.0" textFill="#fcfcfc">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Button fx:id="createButton" layoutX="248.0" layoutY="336.0" mnemonicParsing="false" onAction="#createButtonPress" prefHeight="43.0" prefWidth="153.0" text="Create Match" textAlignment="CENTER">
          <font>
-            <Font name="Arial Rounded MT Bold" size="14.0" />
-         </font></TextField>
-      <Button fx:id="startButton" layoutX="300.0" layoutY="481.0" mnemonicParsing="false" onAction="#buttonStartPress" prefHeight="64.0" prefWidth="200.0" text="Start" textAlignment="CENTER">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="24.0" />
+            <Font name="Arial Rounded MT Bold" size="18.0" />
          </font></Button>
-      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="162.0" layoutY="321.0" prefHeight="23.0" prefWidth="126.0" text="Username" textAlignment="RIGHT" textFill="#f2eaea">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="162.0" layoutY="377.0" prefHeight="23.0" prefWidth="126.0" text="IP Address" textAlignment="RIGHT" textFill="#f2eaea">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="20.0" />
-         </font>
-      </Label>
-      <TextField fx:id="portField" layoutX="300.0" layoutY="422.0" prefHeight="35.0" prefWidth="200.0" promptText="Port">
+      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="223.0" layoutY="272.0" prefHeight="23.0" prefWidth="91.0" text="Username" textAlignment="CENTER" textFill="#f2eaea">
          <font>
             <Font name="Arial Rounded MT Bold" size="14.0" />
          </font>
-      </TextField>
-      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="162.0" layoutY="428.0" prefHeight="23.0" prefWidth="126.0" text="Port" textAlignment="RIGHT" textFill="#f2eaea">
-         <font>
-            <Font name="Arial Rounded MT Bold" size="20.0" />
-         </font>
       </Label>
+      <Button fx:id="joinButton" layoutX="401.0" layoutY="336.0" mnemonicParsing="false" onAction="#joinButtonPress" prefHeight="43.0" prefWidth="153.0" text="Join Match" textAlignment="CENTER">
+         <font>
+            <Font name="Arial Rounded MT Bold" size="18.0" />
+         </font>
+      </Button>
    </children>
 </Pane>
