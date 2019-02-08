@@ -1,5 +1,8 @@
 package game.controller;
 
+import game.network.NetworkClusterServices;
+import game.network.NetworkManager;
+import game.network.PlayerNode;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -13,6 +16,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import utils.Logger;
 import utils.NetworkUtils;
 
 import java.io.File;
@@ -20,6 +24,7 @@ import java.io.IOException;
 
 public class UIController {
 
+    Logger LOG = new Logger(UIController.class);
     @FXML
     TextField userField;
     @FXML
@@ -36,12 +41,16 @@ public class UIController {
     Button createButton;
     @FXML
     Label createLabel;
+    @FXML
+    Button readyButton;
+
+    private String ip;
+    private String username;
+    private int port;
 
     @FXML
     public void initialize(){
     }
-
-    String username = null;
 
     private void alertUsername(){
         Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid Username", ButtonType.OK);
@@ -53,11 +62,14 @@ public class UIController {
     }
     public void createButtonPress(ActionEvent event){
         if (!userField.getText().isEmpty()){
-            username = userField.getText().trim();
-            final String ipAddress = NetworkUtils.getIpAddress();
-            createLabel.setText("Your Ip Address is: " + ipAddress);
-            createPane.setVisible(true);
+            this.username = userField.getText().trim();
             joinPane.setVisible(false);
+            NetworkManager.getInstance().initialize(username);
+            String ipAddress = NetworkManager.getInstance().getMyNode().getIpAddress();
+            int portNum = NetworkManager.getInstance().getMyNode().getPort();
+            createPane.setVisible(true);
+            createLabel.setText("Ip Address: " + ipAddress + "\tPort: " + portNum);
+            //LOG.info("Your Ip Address is: " + ipAddress + ":" + portNum);
             //createButton.setDisable(true);
             //joinButton.setDisable(true);
 
@@ -68,7 +80,7 @@ public class UIController {
 
     public void joinButtonPress(ActionEvent event){
         if (!userField.getText().isEmpty()){
-            username = userField.getText().trim();
+            this.username = userField.getText().trim();
             createPane.setVisible(false);
             joinPane.setVisible(true);
             //createButton.setDisable(true);
@@ -77,29 +89,22 @@ public class UIController {
             alertUsername();
         }
     }
-    public void startGame(ActionEvent event){
-        Button b = (Button)event.getSource();
 
-        if (!userField.getText().isEmpty()){
-            username = userField.getText().trim();
-
-            /*Parent game;
-            try {
-                game = FXMLLoader.load(getClass().getClassLoader().getResource("game/view/Game.fxml"));
-                Stage stage = new Stage();
-                stage.setTitle("UNO - Game mode");
-                stage.setScene(new Scene(game));
-                stage.show();
-                ((Node)(event.getSource())).getScene().getWindow().hide();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }*/
+    public void readyButtonPress(ActionEvent event){
+        if (!ipField.getText().isEmpty() && !portField.getText().isEmpty()){
+            this.ip = ipField.getText().trim();
+            this.port = Integer.parseInt(portField.getText().trim());
+            createPane.setVisible(false);
+            joinPane.setVisible(true);
+            NetworkManager.getInstance().initialize(username);
+            new NetworkClusterServices().joinTheCluster(new PlayerNode(this.ip, this.port));
+            //createButton.setDisable(true);
+            //joinButton.setDisable(true);
         }else{
             alertUsername();
         }
-        String ip = ipField.getText().trim();
-        String port = portField.getText().trim();
+    }
 
+    public void startGame(ActionEvent event) {
     }
 }
