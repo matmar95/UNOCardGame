@@ -19,10 +19,11 @@ public class NetworkClusterServices {
       HashMap<String, PlayerNode> newNodesMap =
           NetworkManager.getInstance().addAllNodes(remoteNodesMap);
 
+
       if (!newNodesMap.isEmpty()) {
         for (Map.Entry<String, PlayerNode> entry : newNodesMap.entrySet()) {
           joinTheCluster(entry.getValue());
-          LOG.info("Join Previous Cluster");
+          LOG.info("Join The Cluster: " + entry.getValue().getUsername());
         }
       }
     } catch (RemoteException e) {

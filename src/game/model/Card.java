@@ -1,7 +1,11 @@
 package game.model;
 
 import javafx.scene.Parent;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 
+import javax.swing.text.html.ImageView;
 import java.io.Serializable;
 
 public class Card extends Parent implements Serializable {
@@ -11,6 +15,7 @@ public class Card extends Parent implements Serializable {
     private Color color;
     private Type type;
     private String imgPath;
+
 
     public Card(int number, Color color, Type type) {
         //Card info
@@ -53,6 +58,14 @@ public class Card extends Parent implements Serializable {
 
     public String getImgPath() {
         return imgPath;
+    }
+
+    public Rectangle getGraphic(double resize){
+        Rectangle rect = new Rectangle();
+        rect.setFill(new ImagePattern(new Image(imgPath)));
+        rect.setWidth(240*resize/100);
+        rect.setHeight(360*resize);
+        return rect;
     }
 
     @Override
