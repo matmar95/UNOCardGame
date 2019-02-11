@@ -11,3 +11,30 @@
     -fx-image: url("../../image_assets/icon.png");
 }
 
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+#scrollPane{
+    -fx-background-color: transparent;
+}
+
+#unoButton{
+    -fx-background-color: transparent;
+    -fx-background-image: url("../../image_assets/icon.png");
+    -fx-background-size:100% 100%;
+    -fx-border-radius: 40, 40;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-effect: dropshadow(three-pass-box, rgba(198,180,0,0.5), 30, 0.5, 0, 0);
+
+}
+
+#unoButton:hover{
+    -fx-background-color: rgba(198,180,0,0.5);
+}
+
+#unoButton:pressed{
+    -fx-background-color: rgba(198,180,0,0.9);
+}
+

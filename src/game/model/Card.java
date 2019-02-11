@@ -63,7 +63,7 @@ public class Card extends Parent implements Serializable {
     public Rectangle getGraphic(double resize){
         Rectangle rect = new Rectangle();
         rect.setFill(new ImagePattern(new Image(imgPath)));
-        rect.setWidth(240*resize/100);
+        rect.setWidth(240*resize);
         rect.setHeight(360*resize);
         return rect;
     }
