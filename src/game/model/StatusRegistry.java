@@ -83,7 +83,7 @@ public class StatusRegistry {
     }
 
     public ArrayList<Card> getPlayerHand(PlayerNode player) {
-        return hands.get(player.getNetworkAddress());
+        return hands.get(player.getUsername());
     }
 
     public void setHands(HashMap<String, ArrayList<Card>> hands) {

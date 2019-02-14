@@ -18,6 +18,7 @@ import utils.Logger;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.Random;
 
 public class HomeUIController {
 
@@ -104,7 +105,7 @@ public class HomeUIController {
 
     public void startGame(ActionEvent event) throws RemoteException {
         StatusRegistry.getInstance().setFirst(true);
-        (new GameController()).startNewGame(NetworkManager.getInstance().getMyNode(), 1L);
+        (new GameController()).startNewGame(NetworkManager.getInstance().getMyNode(), new Random().nextLong());
         Parent root;
         try {
             root = FXMLLoader.load(getClass().getClassLoader().getResource("game/view/Game.fxml"));
