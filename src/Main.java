@@ -1,8 +1,11 @@
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,6 +36,18 @@ public class Main extends Application{
         primaryStage.setTitle("UNO");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("Application Closed by click to Close Button(X)");
+                        System.exit(0);
+                    }
+                });
+            }
+        });
         primaryStage.show();
 
     }

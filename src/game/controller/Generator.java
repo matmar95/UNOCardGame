@@ -5,6 +5,7 @@ import game.model.Color;
 import game.model.StatusRegistry;
 import game.model.Type;
 import game.network.PlayerNode;
+import utils.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import java.util.Random;
 
 public class Generator {
 
+    Logger LOG = new Logger(Generator.class);
     public ArrayList<Card> generateDeck(long seed){
         ArrayList<Card> deck = new ArrayList<>();
         for (Color color: Color.values()) {
@@ -81,5 +83,23 @@ public class Generator {
         }
         StatusRegistry.getInstance().setDeck(deck);
         StatusRegistry.getInstance().setHands(hands);
+    }
+
+    public void topCardToGraveyard(ArrayList<Card> deck) {
+        //prendo la carta in cima al deck
+        Card topDeckCard = deck.get(deck.size() - 1);
+        LOG.info("The first top graveyard card is: " + topDeckCard.getType());
+        //se è diverso dal +4 aggiungo agli scarti e riaggiorno il deck
+        if (topDeckCard.getType() != Type.DRAW4COLORCHANGE && topDeckCard.getType() != Type.COLORCHANGE) {
+            StatusRegistry.getInstance().getGraveyard().add(topDeckCard);
+            //System.out.println(topDeckCard.toString());
+            deck.remove(topDeckCard);
+            StatusRegistry.getInstance().setDeck(deck);
+            //altrimenti sposto il +4 alla fine del mazzo e ricontrollo la carta in cima
+        } else {
+            deck.add(0, topDeckCard);
+            deck.remove(deck.size() - 1);
+            topCardToGraveyard(deck);
+        }
     }
 }

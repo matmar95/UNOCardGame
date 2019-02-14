@@ -2,6 +2,7 @@ package game.controller;
 
 import game.model.Card;
 import game.model.StatusRegistry;
+import game.model.Type;
 import game.network.NetworkManager;
 import game.network.PlayerNode;
 import sun.nio.ch.Net;
@@ -42,7 +43,7 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         ArrayList<Card> deck = new Generator().generateDeck(seed);
         StatusRegistry.getInstance().setDeck(deck);
         new Generator().generateHand(players,deck);
-
+        new Generator().topCardToGraveyard(deck);
         if(StatusRegistry.getInstance().getFirst()){
             for (Map.Entry<String,PlayerNode> entry: NetworkManager.getInstance().getOtherNodes().entrySet()) {
                 try {
@@ -53,11 +54,14 @@ public class GameController extends UnicastRemoteObject implements GameControlle
             }
         }
         LOG.info(StatusRegistry.getInstance().toString());
+        HomeUIController.getInstance().launchGameUI();
 
         if(StatusRegistry.getInstance().getMyPlayerIndex() == StatusRegistry.getInstance().getCurrentPlayerIndex()){
             //timer();
         }
     }
+
+
 
     private void timer(){
         LOG.info("Timer turn started");

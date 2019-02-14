@@ -58,7 +58,7 @@ public class GameUIController {
         hBoxCard.setPadding(new Insets(10));
         scrollPane.setPannable(true);
         rectangleDeck.setFill(new ImagePattern(new Image("/image_assets/card/UNO_Card.png")));
-        rectangleGraveyard.setFill(new ImagePattern(new Image("/image_assets/card/NONE_BLUE_2.png")));
+
 
         /*for (int i=0; i<10; i++) {
             try {
@@ -82,8 +82,8 @@ public class GameUIController {
         for (Card card: StatusRegistry.getInstance().getPlayerHand(NetworkManager.getInstance().getMyNode())){
             hand.add(card.getGraphic(0.25));
         }
-         hBoxCard.getChildren().addAll(hand);
-
+        hBoxCard.getChildren().addAll(hand);
+        rectangleGraveyard.setFill(new ImagePattern(new Image(StatusRegistry.getInstance().getGraveyard().get(StatusRegistry.getInstance().getGraveyard().size()-1).getImgPath())));
         for (PlayerNode player : StatusRegistry.getInstance().getPlayers()){
             try {
                 FXMLLoader avatar = new FXMLLoader(getClass().getResource("/game/view/Avatar.fxml"));
@@ -93,8 +93,6 @@ public class GameUIController {
                 avatarController.setCards(StatusRegistry.getInstance().getPlayerHand(player).size());
                 avatarController.setImgAvatar("avatar1");
                 avatarBox.getChildren().add(vboxAvatar);
-                //avatarBox.setSpacing(4);
-                //avatarBox.setPadding(new Insets(2));
             } catch (IOException e) {
                 e.printStackTrace();
             }
