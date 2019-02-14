@@ -14,12 +14,15 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
+import utils.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 
 public class GameUIController {
+
+    private Logger LOG = new Logger(GameUIController.class);
     @FXML
     ScrollPane scrollPane;
     @FXML

@@ -1,7 +1,7 @@
 package game.network;
 
 import game.controller.GameController;
-import game.controller.UIController;
+import game.controller.GameControllerRemote;
 import utils.Logger;
 import utils.NetworkUtils;
 
@@ -62,6 +62,16 @@ public class NetworkManager {
         }
     }
 
+    public HashMap<String, PlayerNode> getOtherNodes() {
+        HashMap<String, PlayerNode> otherNodes = new HashMap<>();
+        for (Map.Entry<String, PlayerNode> entry : this.nodes.entrySet()) {
+            if (!entry.getKey().equals(myNetworkAddress) && entry.getValue().isAlive()) {
+                otherNodes.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return otherNodes;
+    }
+
     public HashMap<String, PlayerNode> addAllNodes(HashMap<String, PlayerNode> nodes) {
         HashMap<String, PlayerNode> newNodesMap = new HashMap<>();
         for (Map.Entry<String, PlayerNode> entry : nodes.entrySet()) {
@@ -90,7 +100,7 @@ public class NetworkManager {
         }
         try {
             Naming.rebind("//" + myNetworkAddress + "/ClusterServicesRemote", new ClusterServices());
-            //Naming.rebind("//" + myNetworkAddress + "/GameControllerRemote", new GameController());
+            Naming.rebind("//" + myNetworkAddress + "/GameControllerRemote", new GameController());
             LOG.info("RMI rebind ready");
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -98,5 +108,21 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
+    }
+
+    public GameControllerRemote getGameController(final PlayerNode nodePlayer) {
+        String url = "rmi://"+nodePlayer.getNetworkAddress()+"/GameControllerRemote";
+
+        GameControllerRemote gcr = null;
+        try{
+            gcr = (GameControllerRemote) Naming.lookup(url);
+        } catch(NotBoundException nbe){
+            nbe.printStackTrace();
+        } catch (RemoteException re){
+            re.printStackTrace();
+        } catch (MalformedURLException mue){
+            mue.printStackTrace();
+        }
+        return gcr;
     }
 }
