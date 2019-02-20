@@ -42,6 +42,9 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         StatusRegistry.getInstance().setPlayers(players);
         ArrayList<Card> deck = new Generator().generateDeck(seed);
         StatusRegistry.getInstance().setDeck(deck);
+        StatusRegistry.getInstance().setSeed(seed);
+        ArrayList<String> avatars = new  Generator().generateAvatars(seed);
+        StatusRegistry.getInstance().setAvatars(avatars);
         new Generator().generateHand(players,deck);
         new Generator().topCardToGraveyard(deck);
         if(StatusRegistry.getInstance().getFirst()){

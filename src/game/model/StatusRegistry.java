@@ -4,9 +4,8 @@ import game.network.NetworkManager;
 import game.network.PlayerNode;
 import utils.Logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Timer;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class StatusRegistry {
 
@@ -24,6 +23,7 @@ public class StatusRegistry {
     private ArrayList<Card> deck;
     private ArrayList<Card> graveyard;
     private ArrayList<PlayerNode> players;
+    private ArrayList<String> avatars;
     private PlayerNode currentPlayer;
     private int currentPlayerIndex;
     private int direction;
@@ -36,6 +36,20 @@ public class StatusRegistry {
         this.currentPlayerIndex = 0;
         this.deck = new ArrayList<>();
         this.graveyard = new ArrayList<>();
+    }
+
+    public void setAvatars(ArrayList<String> avatars) {
+        this.avatars = avatars;
+    }
+    public ArrayList<String> getAvatars(){
+        return avatars;
+    }
+    public long getSeed() {
+        return seed;
+    }
+
+    public void setSeed(long seed) {
+        this.seed = seed;
     }
 
     public boolean getFirst() {

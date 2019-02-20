@@ -1,12 +1,6 @@
 package game.controller;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.paint.ImagePattern;
@@ -38,12 +32,11 @@ public class AvatarController {
 
     public void setImgAvatar(String avatarImgPath){
         imgAvatar.setFill(new ImagePattern(new Image("/image_assets/avatars/" + avatarImgPath + ".png")));
+        //imgAvatar.setEffect(new DropShadow(+30, 0d, +2d, Color.DARKSEAGREEN));
+
     }
 
     public void setCards(int numcards){
         this.cards.setText(Integer.toString(numcards));
-        if (numcards==3) {
-            imgAvatar.setStrokeWidth(2);
-        }
     }
 }

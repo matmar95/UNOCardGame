@@ -19,6 +19,7 @@ import utils.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class GameUIController {
@@ -40,7 +41,7 @@ public class GameUIController {
     Rectangle rightArrow;
 
     private ArrayList<Rectangle> hand = new ArrayList<>();
-
+    private ArrayList<String> avatars = new ArrayList<>();
     @FXML
     public void initialize(){
         leftArrow.setFill(new ImagePattern(new Image("/image_assets/arrows/CLOCK_LEFT.png")));
@@ -60,14 +61,14 @@ public class GameUIController {
         rectangleDeck.setFill(new ImagePattern(new Image("/image_assets/card/UNO_Card.png")));
 
 
-        /*for (int i=0; i<10; i++) {
+       /* for (int i=11; i<=20; i++) {
             try {
                 FXMLLoader avatar = new FXMLLoader(getClass().getResource("/game/view/Avatar.fxml"));
                 VBox vboxAvatar = avatar.load();
                 AvatarController avatarController = avatar.getController();
                 avatarController.setNameAvatar("ahahahaha"+i);
                 avatarController.setCards(i);
-                avatarController.setImgAvatar("avatar1");
+                avatarController.setImgAvatar("avatar"+i);
                 avatarBox.getChildren().add(vboxAvatar);
                 //avatarBox.setSpacing(4);
                 //avatarBox.setPadding(new Insets(2));
@@ -84,6 +85,8 @@ public class GameUIController {
         }
         hBoxCard.getChildren().addAll(hand);
         rectangleGraveyard.setFill(new ImagePattern(new Image(StatusRegistry.getInstance().getGraveyard().get(StatusRegistry.getInstance().getGraveyard().size()-1).getImgPath())));
+        avatars = StatusRegistry.getInstance().getAvatars();
+        int numAvatar = 1;
         for (PlayerNode player : StatusRegistry.getInstance().getPlayers()){
             try {
                 FXMLLoader avatar = new FXMLLoader(getClass().getResource("/game/view/Avatar.fxml"));
@@ -91,8 +94,9 @@ public class GameUIController {
                 AvatarController avatarController = avatar.getController();
                 avatarController.setNameAvatar(player.getUsername());
                 avatarController.setCards(StatusRegistry.getInstance().getPlayerHand(player).size());
-                avatarController.setImgAvatar("avatar1");
+                avatarController.setImgAvatar(avatars.get(numAvatar));
                 avatarBox.getChildren().add(vboxAvatar);
+                numAvatar++;
             } catch (IOException e) {
                 e.printStackTrace();
             }

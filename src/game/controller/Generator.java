@@ -85,6 +85,7 @@ public class Generator {
         StatusRegistry.getInstance().setHands(hands);
     }
 
+
     public void topCardToGraveyard(ArrayList<Card> deck) {
         //prendo la carta in cima al deck
         Card topDeckCard = deck.get(deck.size() - 1);
@@ -101,5 +102,15 @@ public class Generator {
             deck.remove(deck.size() - 1);
             topCardToGraveyard(deck);
         }
+    }
+
+    public ArrayList<String> generateAvatars(long seed){
+        ArrayList<String> avatars = new ArrayList<>();
+        for (int i =1; i<=20; i++){
+            avatars.add("avatar"+i);
+        }
+        Collections.shuffle(avatars, new Random(seed));
+        
+        return avatars;
     }
 }
