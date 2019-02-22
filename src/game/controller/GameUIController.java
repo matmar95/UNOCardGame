@@ -104,7 +104,8 @@ public class GameUIController {
         Platform.runLater(()->{
             hand.clear();
             for (Card card: StatusRegistry.getInstance().getPlayerHand(NetworkManager.getInstance().getMyNode())){
-                hand.add(card.getGraphic(0.25));
+
+                hand.add(card.getGraphic(0.25, card));
             }
             hBoxCard.getChildren().clear();
             hBoxCard.getChildren().addAll(hand);

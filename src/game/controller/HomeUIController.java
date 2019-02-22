@@ -133,7 +133,6 @@ public class HomeUIController {
     public void addPlayerToLabel(PlayerNode player){
         Platform.runLater(()-> {
             String label = createLabel.getText() + "\n" + "Player " + player.getUsername() + " has joined the cluster";
-            System.out.println(label);
             createLabel.setText(label);
         });
     }

@@ -72,19 +72,19 @@ public class Card extends Parent implements Serializable {
         return imgPath;
     }
 
-    public Rectangle getGraphic(double resize){
+    public Rectangle getGraphic(double resize, Card cartina){
         Rectangle rect = new Rectangle();
         rect.setFill(new ImagePattern(new Image(imgPath)));
         rect.setWidth(240*resize);
         rect.setHeight(360*resize);
-        rect.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        rect.setOnMouseClicked(new EventHandler<MouseEvent>(){
             @Override
             public void handle(MouseEvent event) {
-                /*try {
-                    new GameController().playCard(NetworkManager.getInstance().getMyNode(), );
+                try {
+                    new GameController().playCard(NetworkManager.getInstance().getMyNode(),cartina);
                 } catch (RemoteException e) {
                     e.printStackTrace();
-                }*/
+                }
             }
         });
         return rect;
