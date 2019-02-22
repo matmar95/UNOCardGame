@@ -1,5 +1,6 @@
 package game.controller;
 
+import game.model.Card;
 import game.network.PlayerNode;
 
 import java.rmi.Remote;
@@ -9,4 +10,9 @@ public interface GameControllerRemote extends Remote {
 
     void startNewGame(PlayerNode player, long seed) throws RemoteException;
 
+    void playCard(PlayerNode player, Card card) throws RemoteException;
+
+    void drawCard(PlayerNode player) throws RemoteException;
+
+    void drawTwoCard(PlayerNode player) throws RemoteException;
 }

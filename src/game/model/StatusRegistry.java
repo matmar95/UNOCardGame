@@ -4,8 +4,8 @@ import game.network.NetworkManager;
 import game.network.PlayerNode;
 import utils.Logger;
 
-import java.lang.reflect.Array;
 import java.util.*;
+import java.lang.reflect.Array;
 
 public class StatusRegistry {
 
@@ -23,8 +23,8 @@ public class StatusRegistry {
     private ArrayList<Card> deck;
     private ArrayList<Card> graveyard;
     private ArrayList<PlayerNode> players;
+    private PlayerNode pointedPlayer;
     private ArrayList<String> avatars;
-    private PlayerNode currentPlayer;
     private int currentPlayerIndex;
     private int direction;
     private Timer timer;
@@ -112,19 +112,25 @@ public class StatusRegistry {
         this.players = players;
     }
 
-    public PlayerNode getCurrentPlayer() {
-        return currentPlayer;
+    public PlayerNode getPointedPlayer() {
+        return pointedPlayer;
     }
 
-    public void setCurrentPlayer(PlayerNode currentPlayer) {
-        this.currentPlayer = currentPlayer;
+    public void setPointedPlayer(PlayerNode pointedPlayer) {
+        this.pointedPlayer = pointedPlayer;
     }
 
     public Card getTopGraveyard() {
         return graveyard.get(graveyard.size() - 1);
     }
 
+    public void setTimer(Timer timer) {
+        this.timer = timer;
+    }
 
+    public PlayerNode getAPlayer(int i) {
+        return players.get(i);
+    }
 
     @Override
     public String toString() {
@@ -155,5 +161,35 @@ public class StatusRegistry {
         }
         return timer;
     }
+
+    public int getNextPlayerIndex(boolean b) {
+        int skip = b ? 2 : 1;
+        int i = currentPlayerIndex + (skip * direction);
+        i = i % players.size();
+        if (i < 0) {
+            i += players.size();
+        }
+        return i;
+    }
+
+    public Card drawTopDeckCard() {
+        if(deck.size() == 1){
+            LOG.info("Deck ended");
+            LOG.info("Shuffling Graveyard to Deck");
+            ArrayList<Card> newDeck = new ArrayList<>(getGraveyard().subList(0,graveyard.size()-1));
+            getGraveyard().subList(0,graveyard.size()-1).clear();
+            Collections.shuffle(newDeck, new Random(seed));
+            setDeck(newDeck);
+            LOG.info("Deck size; " + deck.size());
+            LOG.info("Graveyard size; " + graveyard.size());
+            return deck.remove(deck.size()-1);
+        } else {
+            LOG.info("Deck size; " + deck.size());
+            LOG.info("Graveyard size; " + graveyard.size());
+            return deck.remove(deck.size()-1);
+        }
+    }
+
+
 }
 

@@ -1,12 +1,24 @@
 package game.model;
 
+import game.controller.GameController;
+import game.controller.GameUIController;
+import game.network.NetworkManager;
+import javafx.beans.NamedArg;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventTarget;
+import javafx.event.EventType;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 
 import javax.swing.text.html.ImageView;
 import java.io.Serializable;
+import java.rmi.RemoteException;
+
+import static javafx.event.Event.NULL_SOURCE_TARGET;
 
 public class Card extends Parent implements Serializable {
 
@@ -65,6 +77,16 @@ public class Card extends Parent implements Serializable {
         rect.setFill(new ImagePattern(new Image(imgPath)));
         rect.setWidth(240*resize);
         rect.setHeight(360*resize);
+        rect.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                /*try {
+                    new GameController().playCard(NetworkManager.getInstance().getMyNode(), );
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }*/
+            }
+        });
         return rect;
     }
 

@@ -13,7 +13,7 @@
             <HBox fx:id="hBoxCard" alignment="CENTER" prefHeight="98.0" prefWidth="78.0" />
          </content>
       </ScrollPane>
-      <Rectangle fx:id="rectangleDeck" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="252.0" layoutX="225.0" layoutY="200.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="168.0" />
+      <Rectangle fx:id="rectangleDeck" onMouseClicked="#drawCardAction" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="252.0" layoutX="225.0" layoutY="200.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="168.0" />
       <Rectangle fx:id="rectangleGraveyard" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="252.0" layoutX="409.0" layoutY="200.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="168.0" />
       <Button fx:id="unoButton" layoutX="55.0" layoutY="381.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="114.0" />
       <HBox fx:id="avatarBox" alignment="CENTER" layoutX="39.0" layoutY="35.0" prefHeight="143.0" prefWidth="724.0" />

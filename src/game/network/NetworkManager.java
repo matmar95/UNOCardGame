@@ -2,6 +2,7 @@ package game.network;
 
 import game.controller.GameController;
 import game.controller.GameControllerRemote;
+import game.controller.GameUIController;
 import game.controller.HomeUIController;
 import utils.Logger;
 import utils.NetworkUtils;
@@ -126,5 +127,20 @@ public class NetworkManager {
             mue.printStackTrace();
         }
         return gcr;
+    }
+
+    public void nodesHealthCheck() {
+        final HashMap<String, PlayerNode> otherNodes = NetworkManager.getInstance().getOtherNodes();
+        if(otherNodes.size()==0){
+            LOG.warn("Node not in the cluster");
+        } else {
+            for (Map.Entry<String, PlayerNode> entry : otherNodes.entrySet()) {
+                GameControllerRemote gcr = NetworkManager.getInstance().getGameController(entry.getValue());
+                if(gcr == null) {
+                    LOG.warn("This node is offline (dead): " + entry.getValue().toString());
+                    GameUIController.getInstance().updateGUI();
+                }
+            }
+        }
     }
 }
