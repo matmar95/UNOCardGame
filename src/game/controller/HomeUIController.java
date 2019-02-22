@@ -23,6 +23,7 @@ import javafx.stage.WindowEvent;
 import utils.Logger;
 
 import java.io.IOException;
+import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.util.Random;
 
@@ -98,6 +99,8 @@ public class HomeUIController {
             createPane.setVisible(false);
             joinPane.setVisible(true);
             joinButton.setDisable(true);
+            userField.setDisable(true);
+            NetworkManager.getInstance().initialize(username);
         }else{
             alertUsername();
         }
@@ -109,16 +112,21 @@ public class HomeUIController {
             this.port = Integer.parseInt(portField.getText().trim());
             createPane.setVisible(false);
             joinPane.setVisible(true);
-            NetworkManager.getInstance().initialize(username);
-            new NetworkClusterServices().joinTheCluster(new PlayerNode(this.ip, this.port));
-            this.sourcePanel = (Node) event.getSource();
-            createButton.setDisable(true);
-            joinButton.setDisable(true);
-            loadingGif.setVisible(true);
-            readyButton.setDisable(true);
-            ipField.setDisable(true);
-            portField.setDisable(true);
-            loadingGif.setFill(new ImagePattern(new Image("/image_assets/loading.gif")));
+
+            if(NetworkManager.getInstance().getMyNode().getIpAddress()!=this.ip && NetworkManager.getInstance().getMyNode().getPort()!=this.port) {
+                if(new NetworkClusterServices().joinTheCluster(new PlayerNode(this.ip, this.port))) {
+                    this.sourcePanel = (Node) event.getSource();
+                    createButton.setDisable(true);
+                    joinButton.setDisable(true);
+                    loadingGif.setVisible(true);
+                    readyButton.setDisable(true);
+                    ipField.setDisable(true);
+                    portField.setDisable(true);
+                    loadingGif.setFill(new ImagePattern(new Image("/image_assets/loading.gif")));
+                }
+            } else {
+                showDialogError("You can't connect to yourself");
+            }
         }else{
             alertUsername();
         }
@@ -135,6 +143,15 @@ public class HomeUIController {
             String label = createLabel.getText() + "\n" + "Player " + player.getUsername() + " has joined the cluster";
             createLabel.setText(label);
         });
+    }
+
+    public void showDialogError(String msg){
+        Alert alert = new Alert(Alert.AlertType.ERROR, msg, ButtonType.CLOSE);
+        alert.setTitle("");
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.CLOSE) {
+            alert.close();
+        }
     }
 
     public void launchGameUI(){

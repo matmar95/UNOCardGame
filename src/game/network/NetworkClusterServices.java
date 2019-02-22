@@ -1,7 +1,9 @@
 package game.network;
 
+import game.controller.HomeUIController;
 import utils.Logger;
 
+import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,9 +12,9 @@ public class NetworkClusterServices {
 
   private final Logger LOG = new Logger(NetworkClusterServices.class);
 
-  public void joinTheCluster(final PlayerNode node) {
+  public boolean joinTheCluster(final PlayerNode node) {
     ClusterServicesRemote clusterServicesRemote = NetworkManager.getInstance().getClusterServices(node);
-
+    boolean done;
     try {
       HashMap<String, PlayerNode> remoteNodesMap =
           clusterServicesRemote.addNode(NetworkManager.getInstance().getMyNode());
@@ -26,8 +28,11 @@ public class NetworkClusterServices {
           LOG.info("Join The Cluster: " + entry.getValue().getUsername());
         }
       }
-    } catch (RemoteException e) {
+      done = true;
+    } catch (Exception e) {
+      done = false;
       e.printStackTrace();
     }
+    return done;
   }
 }

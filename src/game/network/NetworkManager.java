@@ -38,11 +38,8 @@ public class NetworkManager {
         ClusterServicesRemote clusterServicesRemote = null;
         try {
             clusterServicesRemote = (ClusterServicesRemote) Naming.lookup(url);
-        } catch (NotBoundException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
+        } catch (NotBoundException | MalformedURLException | RemoteException e) {
+            HomeUIController.getInstance().showDialogError("Can't connect to " + player.getIpAddress() + ":" + player.getPort());
             e.printStackTrace();
         }
 
