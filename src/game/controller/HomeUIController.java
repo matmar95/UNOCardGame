@@ -14,7 +14,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.Logger;
@@ -44,6 +47,8 @@ public class HomeUIController {
     Label createLabel;
     @FXML
     Button readyButton;
+    @FXML
+    Rectangle loadingGif;
 
     private String ip;
     private String username;
@@ -79,8 +84,8 @@ public class HomeUIController {
             createPane.setVisible(true);
             createLabel.setText("Ip Address: " + ipAddress + "\tPort: " + portNum);
             //LOG.info("Your Ip Address is: " + ipAddress + ":" + portNum);
-            //createButton.setDisable(true);
-            //joinButton.setDisable(true);
+            createButton.setDisable(true);
+            joinButton.setDisable(true);
 
         }else{
             alertUsername();
@@ -92,8 +97,7 @@ public class HomeUIController {
             this.username = userField.getText().trim();
             createPane.setVisible(false);
             joinPane.setVisible(true);
-            //createButton.setDisable(true);
-            //joinButton.setDisable(true);
+            joinButton.setDisable(true);
         }else{
             alertUsername();
         }
@@ -108,8 +112,13 @@ public class HomeUIController {
             NetworkManager.getInstance().initialize(username);
             new NetworkClusterServices().joinTheCluster(new PlayerNode(this.ip, this.port));
             this.sourcePanel = (Node) event.getSource();
-            //createButton.setDisable(true);
-            //joinButton.setDisable(true);
+            createButton.setDisable(true);
+            joinButton.setDisable(true);
+            loadingGif.setVisible(true);
+            readyButton.setDisable(true);
+            ipField.setDisable(true);
+            portField.setDisable(true);
+            loadingGif.setFill(new ImagePattern(new Image("/image_assets/loading.gif")));
         }else{
             alertUsername();
         }
@@ -119,6 +128,14 @@ public class HomeUIController {
         this.sourcePanel = (Node) event.getSource();
         StatusRegistry.getInstance().setFirst(true);
         (new GameController()).startNewGame(NetworkManager.getInstance().getMyNode(), new Random().nextLong());
+    }
+
+    public void addPlayerToLabel(PlayerNode player){
+        Platform.runLater(()-> {
+            String label = createLabel.getText() + "\n" + "Player " + player.getUsername() + " has joined the cluster";
+            System.out.println(label);
+            createLabel.setText(label);
+        });
     }
 
     public void launchGameUI(){

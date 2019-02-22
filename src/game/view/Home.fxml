@@ -5,14 +5,15 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css"  xmlns:fx="http://javafx.com/fxml/" fx:controller="game.controller.HomeUIController">
+<Pane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@style.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="game.controller.HomeUIController">
    <children>
       <ImageView fx:id="logo" fitHeight="303.0" fitWidth="397.0" layoutX="202.0" layoutY="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
       <Pane fx:id="joinPane" layoutX="239.0" layoutY="387.0" prefHeight="170.0" prefWidth="323.0" visible="false">
          <children>
-            <Button fx:id="readyButton" onAction="#readyButtonPress" layoutX="85.0" layoutY="113.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="153.0" text="Ready" textAlignment="CENTER">
+            <Button fx:id="readyButton" layoutX="85.0" layoutY="113.0" mnemonicParsing="false" onAction="#readyButtonPress" prefHeight="43.0" prefWidth="153.0" text="Ready" textAlignment="CENTER">
                <font>
                   <Font name="Arial Rounded MT Bold" size="22.0" />
                </font>
@@ -37,6 +38,7 @@
                   <Font name="Arial Rounded MT Bold" size="14.0" />
                </font>
             </Label>
+            <Rectangle fx:id="loadingGif" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" layoutX="253.0" layoutY="110.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="false" width="50.0" />
          </children>
       </Pane>
       <TextField fx:id="userField" layoutX="324.0" layoutY="266.0" prefHeight="35.0" prefWidth="153.0" promptText="Username">

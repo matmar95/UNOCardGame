@@ -2,6 +2,7 @@ package game.network;
 
 import game.controller.GameController;
 import game.controller.GameControllerRemote;
+import game.controller.HomeUIController;
 import utils.Logger;
 import utils.NetworkUtils;
 
@@ -59,6 +60,7 @@ public class NetworkManager {
         if (!this.nodes.containsKey(node.getNetworkAddress())) {
             this.nodes.put(node.getNetworkAddress(), node);
             LOG.info("Added new node: " + node.toString());
+            HomeUIController.getInstance().addPlayerToLabel(node);
         }
     }
 
