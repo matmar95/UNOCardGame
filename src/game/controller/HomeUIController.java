@@ -117,16 +117,17 @@ public class HomeUIController {
             joinPane.setVisible(true);
 
             if((!NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()==this.port)||
-                    (NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()!=this.port)) {
-                    if(new NetworkClusterServices().joinTheCluster(new PlayerNode(this.ip, this.port))) {
-                        this.sourcePanel = (Node) event.getSource();
-                        createButton.setDisable(true);
-                        joinButton.setDisable(true);
-                        loadingGif.setVisible(true);
-                        readyButton.setDisable(true);
-                        ipField.setDisable(true);
-                        portField.setDisable(true);
-                        loadingGif.setFill(new ImagePattern(new Image("/image_assets/loading.gif")));
+                    (NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()!=this.port)||
+                        (!NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()!=this.port)) {
+                            if(new NetworkClusterServices().joinTheCluster(new PlayerNode(this.ip, this.port))) {
+                                this.sourcePanel = (Node) event.getSource();
+                                createButton.setDisable(true);
+                                joinButton.setDisable(true);
+                                loadingGif.setVisible(true);
+                                readyButton.setDisable(true);
+                                ipField.setDisable(true);
+                                portField.setDisable(true);
+                                loadingGif.setFill(new ImagePattern(new Image("/image_assets/loading.gif")));
                     }
             } else {
                 showDialogError("You can't connect to yourself");
