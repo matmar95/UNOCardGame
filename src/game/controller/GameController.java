@@ -59,6 +59,7 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         }
         LOG.info(StatusRegistry.getInstance().toString());
         HomeUIController.getInstance().launchGameUI();
+        NetworkManager.getInstance().nodesHealthCheck(true);
 
         if(StatusRegistry.getInstance().getMyPlayerIndex() == StatusRegistry.getInstance().getCurrentPlayerIndex()){
             timer();

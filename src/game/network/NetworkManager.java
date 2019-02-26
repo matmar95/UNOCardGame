@@ -52,7 +52,13 @@ public class NetworkManager {
     }
 
     public HashMap<String, PlayerNode> getAllNodes() {
-        return nodes;
+        HashMap<String, PlayerNode> allAliveNodes = new HashMap<>();
+        for (Map.Entry<String, PlayerNode> entry : this.nodes.entrySet()) {
+            if (entry.getValue().isAlive()) {
+                allAliveNodes.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return allAliveNodes;
     }
 
     public void addNode(PlayerNode node) {
@@ -118,33 +124,34 @@ public class NetworkManager {
         } catch(NotBoundException | MalformedURLException nbe){
             nbe.printStackTrace();
         } catch (RemoteException re){
-            //re.printStackTrace();
             nodes.get(nodePlayer.getNetworkAddress()).setAlive(false);
-            int deadIndexPlayer = StatusRegistry.getInstance().getPlayers().indexOf(nodePlayer);
-            if (deadIndexPlayer == -1) LOG.error("Node not found on GameStatus list: " + nodePlayer.toString());
-            StatusRegistry.getInstance().getPlayers().get(deadIndexPlayer).setAlive(false);
-            StatusRegistry.getInstance().addPlayerHandToDeck(nodePlayer);
-            nodes.remove(nodePlayer.getNetworkAddress());
-            StatusRegistry.getInstance().getPlayers().remove(deadIndexPlayer);
-            StatusRegistry.getInstance().getHands().remove(nodePlayer.getNetworkAddress());
-            int currentPlayerIndex = StatusRegistry.getInstance().getCurrentPlayerIndex();
-            LOG.info("currentPlayerIndex: " + currentPlayerIndex);
-            if (currentPlayerIndex==0){
-                if (StatusRegistry.getInstance().getDirection()==-1){
+            if(StatusRegistry.getInstance().getDeck().size() != 0) {
+                int deadIndexPlayer = StatusRegistry.getInstance().getPlayers().indexOf(nodePlayer);
+                if (deadIndexPlayer == -1) LOG.error("Node not found on StatusRegistry list: " + nodePlayer.toString());
+                StatusRegistry.getInstance().getPlayers().get(deadIndexPlayer).setAlive(false);
+                StatusRegistry.getInstance().addPlayerHandToDeck(nodePlayer);
+                nodes.remove(nodePlayer.getNetworkAddress());
+                StatusRegistry.getInstance().getPlayers().remove(deadIndexPlayer);
+                StatusRegistry.getInstance().getHands().remove(nodePlayer.getNetworkAddress());
+                int currentPlayerIndex = StatusRegistry.getInstance().getCurrentPlayerIndex();
+                LOG.info("currentPlayerIndex: " + currentPlayerIndex);
+                if (currentPlayerIndex == 0) {
+                    if (StatusRegistry.getInstance().getDirection() == -1) {
+                        int newCurrentIndex = StatusRegistry.getInstance().getNextPlayerIndex(false);
+                        StatusRegistry.getInstance().setCurrentPlayerIndex(newCurrentIndex);
+                    }
+                    return gcr;
+                } else if (deadIndexPlayer < currentPlayerIndex) {
+                    currentPlayerIndex--;
+                    StatusRegistry.getInstance().setCurrentPlayerIndex(currentPlayerIndex);
+                } else if (currentPlayerIndex == deadIndexPlayer) {
+                    if (StatusRegistry.getInstance().getDirection() == 1) {
+                        currentPlayerIndex--;
+                        StatusRegistry.getInstance().setCurrentPlayerIndex(currentPlayerIndex);
+                    }
                     int newCurrentIndex = StatusRegistry.getInstance().getNextPlayerIndex(false);
                     StatusRegistry.getInstance().setCurrentPlayerIndex(newCurrentIndex);
                 }
-                return gcr;
-            }else if (deadIndexPlayer < currentPlayerIndex){
-                currentPlayerIndex--;
-                StatusRegistry.getInstance().setCurrentPlayerIndex(currentPlayerIndex);
-            }else if (currentPlayerIndex==deadIndexPlayer){
-                if(StatusRegistry.getInstance().getDirection() == 1){
-                    currentPlayerIndex--;
-                    StatusRegistry.getInstance().setCurrentPlayerIndex(currentPlayerIndex);
-                }
-                int newCurrentIndex = StatusRegistry.getInstance().getNextPlayerIndex(false);
-                StatusRegistry.getInstance().setCurrentPlayerIndex(newCurrentIndex);
             }
         }
         return gcr;
@@ -159,7 +166,8 @@ public class NetworkManager {
                 GameControllerRemote gcr = NetworkManager.getInstance().getGameController(entry.getValue());
                 if(gcr == null) {
                     if(print)LOG.warn("This node is offline (dead): " + entry.getValue().toString());
-                    GameUIController.getInstance().updateGUI();
+                    if(StatusRegistry.getInstance().getDeck().size() != 0)
+                        GameUIController.getInstance().updateGUI();
                 }
             }
         }
