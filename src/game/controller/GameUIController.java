@@ -63,6 +63,12 @@ public class GameUIController {
         hBoxCard.setPadding(new Insets(10));
         scrollPane.setPannable(true);
         rectangleDeck.setFill(new ImagePattern(new Image("/image_assets/card/UNO_Card.png")));
+        avatars = StatusRegistry.getInstance().getAvatars();
+        int numAvatar = 1;
+        for (PlayerNode player : StatusRegistry.getInstance().getPlayers()){
+            player.setAvatar(avatars.get(numAvatar));
+            numAvatar++;
+        }
     }
 
     public void showDialog(String msg){
@@ -86,7 +92,6 @@ public class GameUIController {
             rectangleGraveyard.setFill(new ImagePattern(new Image(StatusRegistry.getInstance().getGraveyard().get(StatusRegistry.getInstance().getGraveyard().size()-1).getImgPath())));
             avatars = StatusRegistry.getInstance().getAvatars();
             avatarBox.getChildren().clear();
-            int numAvatar = 1;
             int index = 0;
             for (PlayerNode player : StatusRegistry.getInstance().getPlayers()){
                 try {
@@ -100,12 +105,11 @@ public class GameUIController {
                     }
                     avatarController.setCards(StatusRegistry.getInstance().getPlayerHand(player).size());
                     if (StatusRegistry.getInstance().getCurrentPlayerIndex() == index){
-                        avatarController.setImgAvatar(avatars.get(numAvatar),true);
+                        avatarController.setImgAvatar(player.getAvatar(),true);
                     }else{
-                        avatarController.setImgAvatar(avatars.get(numAvatar),false);
+                        avatarController.setImgAvatar(player.getAvatar(),false);
                     }
                     avatarBox.getChildren().add(vboxAvatar);
-                    numAvatar++;
                     index++;
                 } catch (IOException e) {
                     e.printStackTrace();

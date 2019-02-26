@@ -3,6 +3,7 @@ package game.controller;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -23,7 +24,7 @@ public class AvatarController {
     @FXML
     VBox vBoxAvatar;
 
-    private final BackgroundFill focusBackground = new BackgroundFill(Color.BLACK, new CornerRadii(3),new Insets(1));
+    private final BackgroundFill focusBackground = new BackgroundFill(Color.rgb(0,0,0,0.6), new CornerRadii(5),new Insets(0));
 
     @FXML
     public void initialize(){
@@ -38,8 +39,8 @@ public class AvatarController {
         imgAvatar.setFill(new ImagePattern(new Image("/image_assets/avatars/" + avatarImgPath + ".png")));
         if (round) {
             vBoxAvatar.setBackground(new Background(focusBackground));
-            vBoxAvatar.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(3))));
-            //vBoxAvatar.setEffect(new DropShadow(+30, 0d, +2d, Color.DARKSEAGREEN));
+            //vBoxAvatar.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(3))));
+            vBoxAvatar.setEffect(new DropShadow(+30, 0d, +2d, Color.YELLOWGREEN));
         }
     }
 

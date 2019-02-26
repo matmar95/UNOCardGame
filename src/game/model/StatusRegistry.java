@@ -190,6 +190,14 @@ public class StatusRegistry {
         }
     }
 
+    public void addPlayerHandToDeck(PlayerNode player) {
+        ArrayList<Card> hand = getPlayerHand(player);
+        Collections.shuffle(hand, new Random(seed));
+        deck.addAll(0, hand);
+        getPlayerHand(player).clear();
+    }
+
+
 
 }
 

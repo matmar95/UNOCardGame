@@ -4,6 +4,7 @@ import game.controller.GameController;
 import game.controller.GameControllerRemote;
 import game.controller.GameUIController;
 import game.controller.HomeUIController;
+import game.model.StatusRegistry;
 import utils.Logger;
 import utils.NetworkUtils;
 
@@ -102,9 +103,7 @@ public class NetworkManager {
             Naming.rebind("//" + myNetworkAddress + "/ClusterServicesRemote", new ClusterServices());
             Naming.rebind("//" + myNetworkAddress + "/GameControllerRemote", new GameController());
             LOG.info("RMI rebind ready");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
+        } catch (RemoteException | MalformedURLException e) {
             e.printStackTrace();
         }
 
@@ -116,12 +115,37 @@ public class NetworkManager {
         GameControllerRemote gcr = null;
         try{
             gcr = (GameControllerRemote) Naming.lookup(url);
-        } catch(NotBoundException nbe){
+        } catch(NotBoundException | MalformedURLException nbe){
             nbe.printStackTrace();
         } catch (RemoteException re){
-            re.printStackTrace();
-        } catch (MalformedURLException mue){
-            mue.printStackTrace();
+            //re.printStackTrace();
+            nodes.get(nodePlayer.getNetworkAddress()).setAlive(false);
+            int deadIndexPlayer = StatusRegistry.getInstance().getPlayers().indexOf(nodePlayer);
+            if (deadIndexPlayer == -1) LOG.error("Node not found on GameStatus list: " + nodePlayer.toString());
+            StatusRegistry.getInstance().getPlayers().get(deadIndexPlayer).setAlive(false);
+            StatusRegistry.getInstance().addPlayerHandToDeck(nodePlayer);
+            nodes.remove(nodePlayer.getNetworkAddress());
+            StatusRegistry.getInstance().getPlayers().remove(deadIndexPlayer);
+            StatusRegistry.getInstance().getHands().remove(nodePlayer.getNetworkAddress());
+            int currentPlayerIndex = StatusRegistry.getInstance().getCurrentPlayerIndex();
+            LOG.info("currentPlayerIndex: " + currentPlayerIndex);
+            if (currentPlayerIndex==0){
+                if (StatusRegistry.getInstance().getDirection()==-1){
+                    int newCurrentIndex = StatusRegistry.getInstance().getNextPlayerIndex(false);
+                    StatusRegistry.getInstance().setCurrentPlayerIndex(newCurrentIndex);
+                }
+                return gcr;
+            }else if (deadIndexPlayer < currentPlayerIndex){
+                currentPlayerIndex--;
+                StatusRegistry.getInstance().setCurrentPlayerIndex(currentPlayerIndex);
+            }else if (currentPlayerIndex==deadIndexPlayer){
+                if(StatusRegistry.getInstance().getDirection() == 1){
+                    currentPlayerIndex--;
+                    StatusRegistry.getInstance().setCurrentPlayerIndex(currentPlayerIndex);
+                }
+                int newCurrentIndex = StatusRegistry.getInstance().getNextPlayerIndex(false);
+                StatusRegistry.getInstance().setCurrentPlayerIndex(newCurrentIndex);
+            }
         }
         return gcr;
     }

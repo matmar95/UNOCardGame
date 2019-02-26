@@ -1,6 +1,7 @@
 package game.controller;
 
 import game.model.StatusRegistry;
+import game.network.HeartbeatService;
 import game.network.NetworkClusterServices;
 import game.network.NetworkManager;
 import game.network.PlayerNode;
@@ -80,6 +81,7 @@ public class HomeUIController {
             this.username = userField.getText().trim();
             joinPane.setVisible(false);
             NetworkManager.getInstance().initialize(username);
+            new Thread(new HeartbeatService()).start();
             String ipAddress = NetworkManager.getInstance().getMyNode().getIpAddress();
             int portNum = NetworkManager.getInstance().getMyNode().getPort();
             createPane.setVisible(true);
@@ -87,6 +89,7 @@ public class HomeUIController {
             //LOG.info("Your Ip Address is: " + ipAddress + ":" + portNum);
             createButton.setDisable(true);
             joinButton.setDisable(true);
+            userField.setDisable(true);
 
         }else{
             alertUsername();
@@ -101,6 +104,7 @@ public class HomeUIController {
             joinButton.setDisable(true);
             userField.setDisable(true);
             NetworkManager.getInstance().initialize(username);
+            new Thread(new HeartbeatService()).start();
         }else{
             alertUsername();
         }

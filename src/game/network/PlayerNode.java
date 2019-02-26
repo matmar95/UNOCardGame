@@ -7,6 +7,7 @@ public class PlayerNode implements Serializable {
     private String ipAddress;
     private int port;
     private boolean alive;
+    private String avatar;
 
     public PlayerNode(String ipAddress, int port) {
         this.ipAddress = ipAddress;
@@ -45,6 +46,12 @@ public class PlayerNode implements Serializable {
         this.alive = alive;
     }
 
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+    public String getAvatar(){
+        return avatar;
+    }
     @Override public boolean equals(Object obj) {
         if (obj instanceof PlayerNode) {
             return this.getNetworkAddress().equals(((PlayerNode) obj).getNetworkAddress());
