@@ -2,6 +2,7 @@ package game.model;
 
 import game.controller.GameController;
 import game.controller.GameUIController;
+import game.controller.HomeUIController;
 import game.network.NetworkManager;
 import javafx.beans.NamedArg;
 import javafx.event.Event;
@@ -81,7 +82,16 @@ public class Card extends Parent implements Serializable {
             @Override
             public void handle(MouseEvent event) {
                 try {
-                    new GameController().playCard(NetworkManager.getInstance().getMyNode(),cartina);
+                    if(cartina.getType() == Type.DRAW4COLORCHANGE || cartina.getType() == Type.COLORCHANGE ){
+                        if (new GameController().isMyTurn(NetworkManager.getInstance().getMyNode())) {
+                            GameUIController.getInstance().setGridColorChooserVisible();
+                            GameUIController.getInstance().setBlackCard(cartina);
+                        } else {
+                            GameUIController.getInstance().showDialog("Non è ancora il tuo turno!");
+                        }
+                    } else {
+                        new GameController().playCard(NetworkManager.getInstance().getMyNode(), cartina);
+                    }
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }

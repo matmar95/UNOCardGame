@@ -37,3 +37,40 @@
 #unoButton:pressed{
     -fx-background-color: rgba(198,180,0,0.9);
 }
+
+#gridColorChoose{
+    -fx-border-radius: 40, 40;
+    -fx-effect: dropshadow(three-pass-box, rgba(198,180,0,0.5), 30, 0.7, 0, 0);
+}
+
+#redChoose{
+    -fx-background-color: red;
+}
+
+#redChoose:pressed{
+    -fx-background-color: rgba(255,0,0,0.3);
+}
+
+#blueChoose{
+    -fx-background-color: blue;
+}
+
+#blueChoose:pressed{
+    -fx-background-color: rgba(0,0,255,0.3);
+}
+
+#greenChoose{
+    -fx-background-color: green;
+}
+
+#greenChoose:pressed{
+    -fx-background-color: rgba(0,128,0,0.3);
+}
+
+#yellowChoose{
+    -fx-background-color: yellow;
+}
+
+#yellowChoose:pressed{
+    -fx-background-color: rgba(255,255,0,0.3);
+}

@@ -150,15 +150,15 @@ public class NetworkManager {
         return gcr;
     }
 
-    public void nodesHealthCheck() {
+    public void nodesHealthCheck(boolean print) {
         final HashMap<String, PlayerNode> otherNodes = NetworkManager.getInstance().getOtherNodes();
         if(otherNodes.size()==0){
-            LOG.warn("Node not in the cluster");
+            if(print)LOG.warn("Node not in the cluster");
         } else {
             for (Map.Entry<String, PlayerNode> entry : otherNodes.entrySet()) {
                 GameControllerRemote gcr = NetworkManager.getInstance().getGameController(entry.getValue());
                 if(gcr == null) {
-                    LOG.warn("This node is offline (dead): " + entry.getValue().toString());
+                    if(print)LOG.warn("This node is offline (dead): " + entry.getValue().toString());
                     GameUIController.getInstance().updateGUI();
                 }
             }

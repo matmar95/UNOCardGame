@@ -28,6 +28,7 @@ public class StatusRegistry {
     private int currentPlayerIndex;
     private int direction;
     private Timer timer;
+    private boolean colorChange;
 
     private StatusRegistry(){
         this.first = false;
@@ -36,6 +37,7 @@ public class StatusRegistry {
         this.currentPlayerIndex = 0;
         this.deck = new ArrayList<>();
         this.graveyard = new ArrayList<>();
+        this.colorChange=true;
     }
 
     public void setAvatars(ArrayList<String> avatars) {
@@ -130,6 +132,14 @@ public class StatusRegistry {
 
     public PlayerNode getAPlayer(int i) {
         return players.get(i);
+    }
+
+    public boolean getColorChange() {
+        return colorChange;
+    }
+
+    public void setColorChange(boolean colorChange) {
+        this.colorChange = colorChange;
     }
 
     @Override

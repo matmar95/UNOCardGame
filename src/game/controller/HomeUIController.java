@@ -1,7 +1,7 @@
 package game.controller;
 
 import game.model.StatusRegistry;
-import game.network.HeartbeatService;
+import game.network.NodeHealthCheckService;
 import game.network.NetworkClusterServices;
 import game.network.NetworkManager;
 import game.network.PlayerNode;
@@ -24,7 +24,6 @@ import javafx.stage.WindowEvent;
 import utils.Logger;
 
 import java.io.IOException;
-import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.util.Random;
 
@@ -81,7 +80,7 @@ public class HomeUIController {
             this.username = userField.getText().trim();
             joinPane.setVisible(false);
             NetworkManager.getInstance().initialize(username);
-            new Thread(new HeartbeatService()).start();
+            new Thread(new NodeHealthCheckService()).start();
             String ipAddress = NetworkManager.getInstance().getMyNode().getIpAddress();
             int portNum = NetworkManager.getInstance().getMyNode().getPort();
             createPane.setVisible(true);
@@ -104,7 +103,7 @@ public class HomeUIController {
             joinButton.setDisable(true);
             userField.setDisable(true);
             NetworkManager.getInstance().initialize(username);
-            new Thread(new HeartbeatService()).start();
+            new Thread(new NodeHealthCheckService()).start();
         }else{
             alertUsername();
         }

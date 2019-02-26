@@ -34,7 +34,7 @@ public class GameController extends UnicastRemoteObject implements GameControlle
     public GameController() throws RemoteException {
     }
 
-    private static int TIME = 20000;
+    private static int TIME = 10000;
 
     @Override
     public void startNewGame(PlayerNode player, long seed){
@@ -61,12 +61,12 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         HomeUIController.getInstance().launchGameUI();
 
         if(StatusRegistry.getInstance().getMyPlayerIndex() == StatusRegistry.getInstance().getCurrentPlayerIndex()){
-            //timer();
+            timer();
         }
     }
 
     @Override public void playCard(PlayerNode player, Card card) {
-        NetworkManager.getInstance().nodesHealthCheck();
+        NetworkManager.getInstance().nodesHealthCheck(true);
         //LOG.info(StatusRegistry.getInstance().toString());
         LOG.info("New card from " + player.getUsername() + ": " + card.toString());
         final StatusRegistry gs = StatusRegistry.getInstance();
@@ -151,7 +151,7 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         }
 
         if (StatusRegistry.getInstance().getMyPlayerIndex() == StatusRegistry.getInstance().getCurrentPlayerIndex()) {
-            //timer();
+            timer();
         }
     }
 
@@ -180,7 +180,7 @@ public class GameController extends UnicastRemoteObject implements GameControlle
     }
 
     public void drawCard(PlayerNode player) {
-        NetworkManager.getInstance().nodesHealthCheck();
+        NetworkManager.getInstance().nodesHealthCheck(true);
         if(StatusRegistry.getInstance().getPlayerHand(player).size()==1){
             StatusRegistry.getInstance().setPointedPlayer(null);
         }
@@ -226,7 +226,7 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         gs.setPointedPlayer(null);
     }
 
-    private boolean isMyTurn(PlayerNode player) {
+    public boolean isMyTurn(PlayerNode player) {
         return !isMePlayer(player) || StatusRegistry.getInstance().getMyPlayerIndex() == StatusRegistry.getInstance().getCurrentPlayerIndex();
     }
 
