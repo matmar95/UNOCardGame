@@ -58,36 +58,11 @@ public class GameUIController {
         instance=this;
         leftArrow.setFill(new ImagePattern(new Image("/image_assets/arrows/CLOCK_LEFT.png")));
         rightArrow.setFill(new ImagePattern(new Image("/image_assets/arrows/CLOCK_RIGHT.png")));
-        /*ArrayList<Rectangle> hand = new ArrayList<>();
-       for (int i=0; i<10; i++){
-           Card newCard = new Card(i, Color.RED, Type.NONE);
-           hand.add(newCard.getGraphic(0.25));
-           Card newCard2 = new Card(i, Color.BLUE, Type.NONE);
-           hand.add(newCard2.getGraphic(0.25));
-        }*/
-        //hBoxCard.getChildren().addAll(hand);
         updateGUI();
         hBoxCard.setSpacing(10);
         hBoxCard.setPadding(new Insets(10));
         scrollPane.setPannable(true);
         rectangleDeck.setFill(new ImagePattern(new Image("/image_assets/card/UNO_Card.png")));
-
-
-       /* for (int i=11; i<=20; i++) {
-            try {
-                FXMLLoader avatar = new FXMLLoader(getClass().getResource("/game/view/Avatar.fxml"));
-                VBox vboxAvatar = avatar.load();
-                AvatarController avatarController = avatar.getController();
-                avatarController.setNameAvatar("ahahahaha"+i);
-                avatarController.setCards(i);
-                avatarController.setImgAvatar("avatar"+i);
-                avatarBox.getChildren().add(vboxAvatar);
-                //avatarBox.setSpacing(4);
-                //avatarBox.setPadding(new Insets(2));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 
     public void showDialog(String msg){
@@ -100,7 +75,6 @@ public class GameUIController {
     }
 
     public void updateGUI(){
-        //System.out.println(StatusRegistry.getInstance().getPlayerHand(NetworkManager.getInstance().getMyNode())+ "AAAA");
         Platform.runLater(()->{
             hand.clear();
             for (Card card: StatusRegistry.getInstance().getPlayerHand(NetworkManager.getInstance().getMyNode())){
@@ -113,22 +87,31 @@ public class GameUIController {
             avatars = StatusRegistry.getInstance().getAvatars();
             avatarBox.getChildren().clear();
             int numAvatar = 1;
+            int index = 0;
             for (PlayerNode player : StatusRegistry.getInstance().getPlayers()){
                 try {
                     FXMLLoader avatar = new FXMLLoader(getClass().getResource("/game/view/Avatar.fxml"));
                     VBox vboxAvatar = avatar.load();
                     AvatarController avatarController = avatar.getController();
-                    avatarController.setNameAvatar(player.getUsername());
+                    if (player == NetworkManager.getInstance().getMyNode()){
+                        avatarController.setNameAvatar("You");
+                    }else{
+                        avatarController.setNameAvatar(player.getUsername());
+                    }
                     avatarController.setCards(StatusRegistry.getInstance().getPlayerHand(player).size());
-                    avatarController.setImgAvatar(avatars.get(numAvatar));
+                    if (StatusRegistry.getInstance().getCurrentPlayerIndex() == index){
+                        avatarController.setImgAvatar(avatars.get(numAvatar),true);
+                    }else{
+                        avatarController.setImgAvatar(avatars.get(numAvatar),false);
+                    }
                     avatarBox.getChildren().add(vboxAvatar);
                     numAvatar++;
+                    index++;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
-
     }
 
     public void drawCardAction(javafx.scene.input.MouseEvent mouseEvent) throws RemoteException {
