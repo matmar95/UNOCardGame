@@ -5,7 +5,6 @@ import game.network.PlayerNode;
 import utils.Logger;
 
 import java.util.*;
-import java.lang.reflect.Array;
 
 public class StatusRegistry {
 
@@ -23,7 +22,7 @@ public class StatusRegistry {
     private ArrayList<Card> deck;
     private ArrayList<Card> graveyard;
     private ArrayList<PlayerNode> players;
-    private PlayerNode pointedPlayer;
+    private PlayerNode calledOnePlayer;
     private ArrayList<String> avatars;
     private int currentPlayerIndex;
     private int direction;
@@ -114,12 +113,12 @@ public class StatusRegistry {
         this.players = players;
     }
 
-    public PlayerNode getPointedPlayer() {
-        return pointedPlayer;
+    public PlayerNode getCalledOnePlayer() {
+        return calledOnePlayer;
     }
 
-    public void setPointedPlayer(PlayerNode pointedPlayer) {
-        this.pointedPlayer = pointedPlayer;
+    public void setCalledOnePlayer(PlayerNode calledOnePlayer) {
+        this.calledOnePlayer = calledOnePlayer;
     }
 
     public Card getTopGraveyard() {

@@ -25,6 +25,7 @@ import utils.Logger;
 
 import javafx.scene.input.MouseEvent;
 import java.io.IOException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -113,12 +114,14 @@ public class GameUIController {
     }
 
     public void showDialog(String msg){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.CLOSE);
-        alert.setTitle("");
-        alert.showAndWait();
-        if (alert.getResult() == ButtonType.CLOSE) {
-            alert.close();
-        }
+        Platform.runLater(()->{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.CLOSE);
+            alert.setTitle("");
+            alert.show();
+            if (alert.getResult() == ButtonType.CLOSE) {
+                alert.close();
+            }
+        });
     }
 
     public void updateGUI(){
@@ -179,6 +182,32 @@ public class GameUIController {
 
     public void drawCardAction(MouseEvent mouseEvent) throws RemoteException {
         (new GameController()).drawCard(NetworkManager.getInstance().getMyNode());
+    }
+
+    public void callOneAction(ActionEvent event) throws RemoteException {
+        if(StatusRegistry.getInstance().getCurrentPlayerIndex() == StatusRegistry.getInstance().getMyPlayerIndex()){
+            //if(StatusRegistry.getInstance().getPlayerHand(NetworkManager.getInstance().getMyNode()).size()==2) {
+                (new GameController()).callOne(NetworkManager.getInstance().getMyNode());
+            } else {
+                showDialog("Non puoi chiamare UNO");
+            }
+        //}
+
+    }
+
+    public void showVictoryScreen(PlayerNode player) {
+        Platform.runLater(()->{
+            String winner = player.getUsername();
+            if(player.getNetworkAddress().equals(NetworkManager.getInstance().getMyNode().getNetworkAddress())){
+                winner = "YOU";
+            }
+            Alert victory = new Alert(Alert.AlertType.CONFIRMATION, "The winner is " + winner + "!",ButtonType.OK);
+            victory.setTitle("Winner");
+            victory.show();
+            if (victory.getResult() == ButtonType.OK) {
+                victory.close();
+            }
+        });
     }
 }
 

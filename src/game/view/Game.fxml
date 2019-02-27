@@ -18,7 +18,7 @@
       </ScrollPane>
       <Rectangle fx:id="rectangleDeck" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="252.0" layoutX="225.0" layoutY="200.0" onMouseClicked="#drawCardAction" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="168.0" />
       <Rectangle fx:id="rectangleGraveyard" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="252.0" layoutX="409.0" layoutY="200.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="168.0" />
-      <Button fx:id="unoButton" layoutX="55.0" layoutY="381.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="114.0" />
+      <Button fx:id="unoButton" layoutX="55.0" onAction="#callOneAction" layoutY="381.0" mnemonicParsing="false" prefHeight="71.0" prefWidth="114.0" />
       <HBox fx:id="avatarBox" alignment="CENTER" layoutX="39.0" layoutY="35.0" prefHeight="143.0" prefWidth="724.0" />
       <Rectangle fx:id="leftArrow" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="70.0" layoutX="134.0" layoutY="190.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="70.0" />
       <Rectangle fx:id="rightArrow" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="70.0" layoutX="600.0" layoutY="190.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="70.0" />

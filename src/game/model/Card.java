@@ -84,8 +84,12 @@ public class Card extends Parent implements Serializable {
                 try {
                     if(cartina.getType() == Type.DRAW4COLORCHANGE || cartina.getType() == Type.COLORCHANGE ){
                         if (new GameController().isMyTurn(NetworkManager.getInstance().getMyNode())) {
-                            GameUIController.getInstance().setGridColorChooserVisible();
-                            GameUIController.getInstance().setBlackCard(cartina);
+                            if(new GameController().isValidCard(NetworkManager.getInstance().getMyNode(),cartina)) {
+                                GameUIController.getInstance().setGridColorChooserVisible();
+                                GameUIController.getInstance().setBlackCard(cartina);
+                            } else {
+                                GameUIController.getInstance().showDialog("Non puoi giocare questa carta!");
+                            }
                         } else {
                             GameUIController.getInstance().showDialog("Non è ancora il tuo turno!");
                         }

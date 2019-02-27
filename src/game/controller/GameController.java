@@ -34,7 +34,7 @@ public class GameController extends UnicastRemoteObject implements GameControlle
     public GameController() throws RemoteException {
     }
 
-    private static int TIME = 10000;
+    private static int TIME = 20000;
 
     @Override
     public void startNewGame(PlayerNode player, long seed){
@@ -71,8 +71,9 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         //LOG.info(StatusRegistry.getInstance().toString());
         LOG.info("New card from " + player.getUsername() + ": " + card.toString());
         final StatusRegistry gs = StatusRegistry.getInstance();
+        GameUIController.getInstance().gridColorChoose.setVisible(false);
         if (gs.getPlayerHand(player).size() == 1) {
-            StatusRegistry.getInstance().setPointedPlayer(null);
+            StatusRegistry.getInstance().setCalledOnePlayer(null);
         }
         if (!isMyTurn(player)) {
             GameUIController.getInstance().showDialog("Non è ancora il tuo turno!");
@@ -80,14 +81,10 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         }
         if (isMePlayer(player) && !isValidCard(player, card)) {
             GameUIController.getInstance().showDialog("Non puoi giocare questa carta!");
+            GameUIController.getInstance().gridColorChoose.setVisible(false);
             return;
         }
-        if(StatusRegistry.getInstance().getTimer() != null){
-            StatusRegistry.getInstance().getTimer().cancel();
-            StatusRegistry.getInstance().getTimer().purge();
-            StatusRegistry.getInstance().setTimer(null);
-            LOG.info("Countdown stopped");
-        }
+        stopTimer();
         switch (card.getType()) {
             case NONE:
                 gs.setCurrentPlayerIndex(gs.getNextPlayerIndex(false));
@@ -130,10 +127,10 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         gs.getPlayerHand(player).remove(card);
 
         if (gs.getPlayerHand(player).size() == 0) {
-           //GameUIController.getInstance().showVictoryScreen(player);
+            callVictoryScreen(player);
         }
         boolean drawTwoCard = false;
-        if (isMePlayer(player) && gs.getPlayerHand(player).size() == 1 && gs.getPointedPlayer() == null) {
+        if (isMePlayer(player) && gs.getPlayerHand(player).size() == 1 && gs.getCalledOnePlayer() == null) {
             drawTwoCard(player);
             drawTwoCard = true;
         }
@@ -156,7 +153,7 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         }
     }
 
-    private boolean isValidCard(PlayerNode player, Card card) {
+    public boolean isValidCard(PlayerNode player, Card card) {
         Card topGraveyardCard = StatusRegistry.getInstance().getTopGraveyard();
         Color topGraveyardColor = topGraveyardCard.getColor();
         int topGraveyardCardNumber = topGraveyardCard.getNumber();
@@ -183,18 +180,13 @@ public class GameController extends UnicastRemoteObject implements GameControlle
     public void drawCard(PlayerNode player) {
         NetworkManager.getInstance().nodesHealthCheck(true);
         if(StatusRegistry.getInstance().getPlayerHand(player).size()==1){
-            StatusRegistry.getInstance().setPointedPlayer(null);
+            StatusRegistry.getInstance().setCalledOnePlayer(null);
         }
         if (!isMyTurn(player)) {
             GameUIController.getInstance().showDialog("Non è ancora il tuo turno!");
             return;
         }
-        if(StatusRegistry.getInstance().getTimer() != null){
-            StatusRegistry.getInstance().getTimer().cancel();
-            StatusRegistry.getInstance().getTimer().purge();
-            StatusRegistry.getInstance().setTimer(null);
-            LOG.info("Countdown stopped");
-        }
+        stopTimer();
         LOG.info(player.getUsername() + " drawed a card");
         StatusRegistry.getInstance().getPlayerHand(player).add(StatusRegistry.getInstance().drawTopDeckCard());
         StatusRegistry.getInstance().setCurrentPlayerIndex(StatusRegistry.getInstance().getNextPlayerIndex(false));
@@ -217,6 +209,41 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         LOG.info(StatusRegistry.getInstance().getPlayerHand(NetworkManager.getInstance().getMyNode()).toString());
     }
 
+    @Override public void callOne(PlayerNode player) {
+        NetworkManager.getInstance().nodesHealthCheck(true);
+        if (!isMePlayer(player)) {
+            GameUIController.getInstance().showDialog("Player " + player.getUsername() + " called UNO!");
+        }
+        StatusRegistry.getInstance().setCalledOnePlayer(player);
+        GameUIController.getInstance().updateGUI();
+        if (isMePlayer(player)) {
+            for (Map.Entry<String, PlayerNode> entry : NetworkManager.getInstance().getOtherNodes().entrySet()) {
+                try {
+                    NetworkManager.getInstance().getGameController(entry.getValue()).callOne(player);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void callVictoryScreen(PlayerNode player){
+        NetworkManager.getInstance().nodesHealthCheck(true);
+        GameUIController.getInstance().showVictoryScreen(player);
+        GameUIController.getInstance().updateGUI();
+        stopTimer();
+        if (isMePlayer(player)) {
+            for (Map.Entry<String, PlayerNode> entry : NetworkManager.getInstance().getOtherNodes().entrySet()) {
+                try {
+                    NetworkManager.getInstance().getGameController(entry.getValue()).callVictoryScreen(player);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     @Override
     public void drawTwoCard(PlayerNode player) {
         final StatusRegistry gs = StatusRegistry.getInstance();
@@ -224,7 +251,7 @@ public class GameController extends UnicastRemoteObject implements GameControlle
         Card card2 = gs.drawTopDeckCard();
         gs.getPlayerHand(player).add(card1);
         gs.getPlayerHand(player).add(card2);
-        gs.setPointedPlayer(null);
+        gs.setCalledOnePlayer(null);
     }
 
     public boolean isMyTurn(PlayerNode player) {
@@ -246,6 +273,15 @@ public class GameController extends UnicastRemoteObject implements GameControlle
                 }
             }, TIME);
         });
+    }
+
+    private void stopTimer(){
+        if(StatusRegistry.getInstance().getTimer() != null){
+            StatusRegistry.getInstance().getTimer().cancel();
+            StatusRegistry.getInstance().getTimer().purge();
+            StatusRegistry.getInstance().setTimer(null);
+            LOG.info("Countdown stopped");
+        }
     }
 
 

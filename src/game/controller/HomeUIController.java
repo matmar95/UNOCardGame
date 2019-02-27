@@ -127,8 +127,8 @@ public class HomeUIController {
             joinPane.setVisible(true);
 
             if((!NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()==this.port)||
-                    (NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()!=this.port)||
-                        (!NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()!=this.port)) {
+                    (NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()!=this.port) ||
+                    (!NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()!=this.port)) {
                             if(new NetworkClusterServices().joinTheCluster(new PlayerNode(this.ip, this.port))) {
                                 this.sourcePanel = (Node) event.getSource();
                                 createButton.setDisable(true);
