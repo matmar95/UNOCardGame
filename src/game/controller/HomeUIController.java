@@ -17,8 +17,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import utils.Logger;
@@ -50,6 +54,8 @@ public class HomeUIController {
     Button readyButton;
     @FXML
     Rectangle loadingGif;
+    @FXML
+    VBox vBoxLabels;
 
     private String ip;
     private String username;
@@ -84,7 +90,11 @@ public class HomeUIController {
             String ipAddress = NetworkManager.getInstance().getMyNode().getIpAddress();
             int portNum = NetworkManager.getInstance().getMyNode().getPort();
             createPane.setVisible(true);
-            createLabel.setText("Ip Address: " + ipAddress + "\tPort: " + portNum);
+            Label userLabel = new Label();
+            userLabel.setText("Ip Address: " + ipAddress + "\tPort: " + portNum);
+            userLabel.setFont(new Font("Arial Rounded MT Bold",14));
+            userLabel.setTextFill(Color.rgb(242,234,234,1));
+            vBoxLabels.getChildren().add(userLabel);
             //LOG.info("Your Ip Address is: " + ipAddress + ":" + portNum);
             createButton.setDisable(true);
             joinButton.setDisable(true);
@@ -145,8 +155,11 @@ public class HomeUIController {
 
     public void addPlayerToLabel(PlayerNode player){
         Platform.runLater(()-> {
-            String label = createLabel.getText() + "\n" + "Player " + player.getUsername() + " has joined the cluster";
-            createLabel.setText(label);
+            Label label = new Label();
+            label.setText("Player " + player.getUsername() + " has joined the cluster");
+            label.setFont(new Font("Arial Rounded MT Bold",14));
+            label.setTextFill(Color.rgb(242,234,234,1));
+            vBoxLabels.getChildren().add(label);
         });
     }
 
