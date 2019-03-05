@@ -16,21 +16,6 @@ import java.util.*;
 public class GameController extends UnicastRemoteObject implements GameControllerRemote {
 
     private Logger LOG = new Logger(GameController.class);
-
-    /*private static GameController instance;
-
-    static {
-        try {
-            instance = new GameController();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static GameController getInstance() {
-        return instance;
-    }*/
-
     public GameController() throws RemoteException {
     }
 
@@ -68,7 +53,6 @@ public class GameController extends UnicastRemoteObject implements GameControlle
 
     @Override public void playCard(PlayerNode player, Card card) {
         NetworkManager.getInstance().nodesHealthCheck(true);
-        //LOG.info(StatusRegistry.getInstance().toString());
         LOG.info("New card from " + player.getUsername() + ": " + card.toString());
         final StatusRegistry gs = StatusRegistry.getInstance();
         GameUIController.getInstance().gridColorChoose.setVisible(false);

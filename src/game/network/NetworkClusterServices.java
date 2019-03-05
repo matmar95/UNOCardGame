@@ -1,10 +1,6 @@
 package game.network;
 
-import game.controller.HomeUIController;
 import utils.Logger;
-
-import java.rmi.ConnectException;
-import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -21,15 +21,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import sun.rmi.runtime.Log;
 import utils.Logger;
 
 import javafx.scene.input.MouseEvent;
 import java.io.IOException;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Random;
 
 
 public class GameUIController {

@@ -39,7 +39,6 @@ public class AvatarController {
         imgAvatar.setFill(new ImagePattern(new Image("/image_assets/avatars/" + avatarImgPath + ".png")));
         if (round) {
             vBoxAvatar.setBackground(new Background(focusBackground));
-            //vBoxAvatar.setBorder(new Border(new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID, new CornerRadii(3), new BorderWidths(3))));
             vBoxAvatar.setEffect(new DropShadow(+30, 0d, +2d, Color.YELLOWGREEN));
         }
     }

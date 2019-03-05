@@ -197,7 +197,6 @@ public class HomeUIController {
                     }
                 });
                 stage.show();
-                // Hide this current window (if this is what you want)
 
             } catch (
                     IOException e) {
