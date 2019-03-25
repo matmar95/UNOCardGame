@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class NetworkManager {
 
-    Logger LOG = new Logger(NetworkManager.class);
+    private Logger LOG = new Logger(NetworkManager.class);
 
     private static NetworkManager ourInstance = new NetworkManager();
     private int playerNumber;
@@ -36,7 +36,7 @@ public class NetworkManager {
 
     private String myNetworkAddress;
 
-    public ClusterServicesRemote getClusterServices(final PlayerNode player) {
+    ClusterServicesRemote getClusterServices(final PlayerNode player) {
         String url = "rmi://" + player.getNetworkAddress() + "/ClusterServicesRemote";
 
         ClusterServicesRemote clusterServicesRemote = null;
@@ -64,7 +64,7 @@ public class NetworkManager {
         return allAliveNodes;
     }
 
-    public void addNode(PlayerNode node) {
+    void addNode(PlayerNode node) {
         if (!this.nodes.containsKey(node.getNetworkAddress())) {
             this.nodes.put(node.getNetworkAddress(), node);
             LOG.info("Added new node: " + node.toString());
@@ -82,7 +82,7 @@ public class NetworkManager {
         return otherNodes;
     }
 
-    public HashMap<String, PlayerNode> addAllNodes(HashMap<String, PlayerNode> nodes) {
+    HashMap<String, PlayerNode> addAllNodes(HashMap<String, PlayerNode> nodes) {
         HashMap<String, PlayerNode> newNodesMap = new HashMap<>();
         for (Map.Entry<String, PlayerNode> entry : nodes.entrySet()) {
             if (!this.nodes.containsKey(entry.getKey())) {
@@ -188,7 +188,7 @@ public class NetworkManager {
         }
     }
 
-    public boolean checkCanPlay() {
+    boolean checkCanPlay() {
         if(++this.playerNumber<=10){
             LOG.info("checked num player: OK");
             return true;

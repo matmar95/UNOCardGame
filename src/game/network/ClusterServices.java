@@ -11,17 +11,17 @@ public class ClusterServices extends UnicastRemoteObject implements
 
   private final Logger LOG = new Logger(ClusterServices.class);
 
-  protected ClusterServices() throws RemoteException {
+  ClusterServices() throws RemoteException {
     super();
   }
 
   @Override
-  public HashMap<String, PlayerNode> addNode(PlayerNode node) throws RemoteException {
+  public HashMap<String, PlayerNode> addNode(PlayerNode node) {
     NetworkManager.getInstance().addNode(node);
     return NetworkManager.getInstance().getAllNodes();
   }
 
-  public boolean canPlay() throws RemoteException {
+  public boolean canPlay() {
     return NetworkManager.getInstance().checkCanPlay();
   }
 }

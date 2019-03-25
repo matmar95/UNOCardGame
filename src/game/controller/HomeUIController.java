@@ -29,6 +29,7 @@ import utils.Logger;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.Objects;
 import java.util.Random;
 
 public class HomeUIController {
@@ -173,30 +174,20 @@ public class HomeUIController {
         }
     }
 
-    public void launchGameUI(){
+    void launchGameUI(){
         Platform.runLater(()-> {
             Parent root;
             try {
                 sourcePanel.getScene().getWindow().hide();
-                root = FXMLLoader.load(getClass().getClassLoader().getResource("game/view/Game.fxml"));
+                root = FXMLLoader.load(Objects.requireNonNull(getClass().getClassLoader().getResource("game/view/Game.fxml")));
                 Stage stage = new Stage();
                 stage.setTitle("UNO-Game");
                 stage.setScene(new Scene(root));
                 stage.setResizable(false);
-                stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-
-                    @Override
-                    public void handle(WindowEvent event) {
-                        Platform.runLater(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                System.out.println("Application Closed by click to Close Button(X)");
-                                System.exit(0);
-                            }
-                        });
-                    }
-                });
+                stage.setOnCloseRequest(event -> Platform.runLater(() -> {
+                    System.out.println("Application Closed by click to Close Button(X)");
+                    System.exit(0);
+                }));
                 stage.show();
 
             } catch (
