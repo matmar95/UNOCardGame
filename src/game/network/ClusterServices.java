@@ -16,18 +16,12 @@ public class ClusterServices extends UnicastRemoteObject implements
   }
 
   @Override
-  public void hello() throws RemoteException {
-    LOG.info("Hello World");
-  }
-
-  @Override
   public HashMap<String, PlayerNode> addNode(PlayerNode node) throws RemoteException {
     NetworkManager.getInstance().addNode(node);
     return NetworkManager.getInstance().getAllNodes();
   }
 
-  @Override
-  public int sendBeat(PlayerNode node, int blockchainLength) throws RemoteException {
-    return 0;
+  public boolean canPlay() throws RemoteException {
+    return NetworkManager.getInstance().checkCanPlay();
   }
 }

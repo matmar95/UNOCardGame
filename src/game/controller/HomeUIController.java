@@ -126,16 +126,20 @@ public class HomeUIController {
             if((!NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()==this.port)||
                     (NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()!=this.port) ||
                     (!NetworkManager.getInstance().getMyNode().getIpAddress().equals(this.ip) && NetworkManager.getInstance().getMyNode().getPort()!=this.port)) {
-                            if(new NetworkClusterServices().joinTheCluster(new PlayerNode(this.ip, this.port))) {
-                                this.sourcePanel = (Node) event.getSource();
-                                createButton.setDisable(true);
-                                joinButton.setDisable(true);
-                                loadingGif.setVisible(true);
-                                readyButton.setDisable(true);
-                                ipField.setDisable(true);
-                                portField.setDisable(true);
-                                loadingGif.setFill(new ImagePattern(new Image("/image_assets/loading.gif")));
+                if(new NetworkClusterServices().canJoinCluster(new PlayerNode(this.ip,this.port))) {
+                    if (new NetworkClusterServices().joinTheCluster(new PlayerNode(this.ip, this.port))) {
+                        this.sourcePanel = (Node) event.getSource();
+                        createButton.setDisable(true);
+                        joinButton.setDisable(true);
+                        loadingGif.setVisible(true);
+                        readyButton.setDisable(true);
+                        ipField.setDisable(true);
+                        portField.setDisable(true);
+                        loadingGif.setFill(new ImagePattern(new Image("/image_assets/loading.gif")));
                     }
+                } else {
+                    showDialogError("Max player numbers reached for this game");
+                }
             } else {
                 showDialogError("You can't connect to yourself");
             }

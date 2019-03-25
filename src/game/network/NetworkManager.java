@@ -20,6 +20,8 @@ public class NetworkManager {
     Logger LOG = new Logger(NetworkManager.class);
 
     private static NetworkManager ourInstance = new NetworkManager();
+    private int playerNumber;
+    private int gcrCheck;
 
     public static NetworkManager getInstance() {
         return ourInstance;
@@ -29,6 +31,7 @@ public class NetworkManager {
 
     private NetworkManager() {
         this.nodes = new HashMap<>();
+        this.playerNumber = 0;
     }
 
     private String myNetworkAddress;
@@ -121,37 +124,49 @@ public class NetworkManager {
         GameControllerRemote gcr = null;
         try{
             gcr = (GameControllerRemote) Naming.lookup(url);
+            gcrCheck = 0;
         } catch(NotBoundException | MalformedURLException nbe){
             nbe.printStackTrace();
         } catch (RemoteException re){
-            nodes.get(nodePlayer.getNetworkAddress()).setAlive(false);
-            if(StatusRegistry.getInstance().getDeck().size() != 0) {
-                int deadIndexPlayer = StatusRegistry.getInstance().getPlayers().indexOf(nodePlayer);
-                if (deadIndexPlayer == -1) LOG.error("Node not found on StatusRegistry list: " + nodePlayer.toString());
-                StatusRegistry.getInstance().getPlayers().get(deadIndexPlayer).setAlive(false);
-                StatusRegistry.getInstance().addPlayerHandToDeck(nodePlayer);
-                nodes.remove(nodePlayer.getNetworkAddress());
-                StatusRegistry.getInstance().getPlayers().remove(deadIndexPlayer);
-                StatusRegistry.getInstance().getHands().remove(nodePlayer.getNetworkAddress());
-                int currentPlayerIndex = StatusRegistry.getInstance().getCurrentPlayerIndex();
-                LOG.info("currentPlayerIndex: " + currentPlayerIndex);
-                if (currentPlayerIndex == 0) {
-                    if (StatusRegistry.getInstance().getDirection() == -1) {
+            if(++gcrCheck>3) {
+                nodes.get(nodePlayer.getNetworkAddress()).setAlive(false);
+                if (StatusRegistry.getInstance().getDeck().size() != 0) {
+                    int deadIndexPlayer = StatusRegistry.getInstance().getPlayers().indexOf(nodePlayer);
+                    if (deadIndexPlayer == -1)
+                        LOG.error("Node not found on StatusRegistry list: " + nodePlayer.toString());
+                    StatusRegistry.getInstance().getPlayers().get(deadIndexPlayer).setAlive(false);
+                    StatusRegistry.getInstance().addPlayerHandToDeck(nodePlayer);
+                    nodes.remove(nodePlayer.getNetworkAddress());
+                    StatusRegistry.getInstance().getPlayers().remove(deadIndexPlayer);
+                    StatusRegistry.getInstance().getHands().remove(nodePlayer.getNetworkAddress());
+                    int currentPlayerIndex = StatusRegistry.getInstance().getCurrentPlayerIndex();
+                    LOG.info("currentPlayerIndex: " + currentPlayerIndex);
+                    if (currentPlayerIndex == 0) {
+                        if (StatusRegistry.getInstance().getDirection() == -1) {
+                            int newCurrentIndex = StatusRegistry.getInstance().getNextPlayerIndex(false);
+                            StatusRegistry.getInstance().setCurrentPlayerIndex(newCurrentIndex);
+                        }
+                        return gcr;
+                    } else if (deadIndexPlayer < currentPlayerIndex) {
+                        currentPlayerIndex--;
+                        StatusRegistry.getInstance().setCurrentPlayerIndex(currentPlayerIndex);
+                    } else if (currentPlayerIndex == deadIndexPlayer) {
+                        if (StatusRegistry.getInstance().getDirection() == 1) {
+                            currentPlayerIndex--;
+                            StatusRegistry.getInstance().setCurrentPlayerIndex(currentPlayerIndex);
+                        }
                         int newCurrentIndex = StatusRegistry.getInstance().getNextPlayerIndex(false);
                         StatusRegistry.getInstance().setCurrentPlayerIndex(newCurrentIndex);
                     }
-                    return gcr;
-                } else if (deadIndexPlayer < currentPlayerIndex) {
-                    currentPlayerIndex--;
-                    StatusRegistry.getInstance().setCurrentPlayerIndex(currentPlayerIndex);
-                } else if (currentPlayerIndex == deadIndexPlayer) {
-                    if (StatusRegistry.getInstance().getDirection() == 1) {
-                        currentPlayerIndex--;
-                        StatusRegistry.getInstance().setCurrentPlayerIndex(currentPlayerIndex);
-                    }
-                    int newCurrentIndex = StatusRegistry.getInstance().getNextPlayerIndex(false);
-                    StatusRegistry.getInstance().setCurrentPlayerIndex(newCurrentIndex);
                 }
+            } else {
+                LOG.info("Node Unreachable. Reachability Check: "+ gcrCheck);
+                try {
+                    Thread.sleep(150);
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                gcr = getGameController(nodePlayer);
             }
         }
         return gcr;
@@ -170,6 +185,16 @@ public class NetworkManager {
                         GameUIController.getInstance().updateGUI();
                 }
             }
+        }
+    }
+
+    public boolean checkCanPlay() {
+        if(++this.playerNumber<=10){
+            LOG.info("checked num player: OK");
+            return true;
+        } else {
+            LOG.info("checked num player: NO");
+            return false;
         }
     }
 }
