@@ -49,8 +49,6 @@ public class HomeUIController {
     @FXML
     Button createButton;
     @FXML
-    Label createLabel;
-    @FXML
     Button readyButton;
     @FXML
     Rectangle loadingGif;
@@ -95,7 +93,6 @@ public class HomeUIController {
             userLabel.setFont(new Font("Arial Rounded MT Bold",14));
             userLabel.setTextFill(Color.rgb(242,234,234,1));
             vBoxLabels.getChildren().add(userLabel);
-            //LOG.info("Your Ip Address is: " + ipAddress + ":" + portNum);
             createButton.setDisable(true);
             joinButton.setDisable(true);
             userField.setDisable(true);

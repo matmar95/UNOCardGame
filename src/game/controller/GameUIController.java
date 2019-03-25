@@ -184,12 +184,11 @@ public class GameUIController {
 
     public void callOneAction(ActionEvent event) throws RemoteException {
         if(StatusRegistry.getInstance().getCurrentPlayerIndex() == StatusRegistry.getInstance().getMyPlayerIndex()){
-            //if(StatusRegistry.getInstance().getPlayerHand(NetworkManager.getInstance().getMyNode()).size()==2) {
                 (new GameController()).callOne(NetworkManager.getInstance().getMyNode());
             } else {
                 showDialog("Non puoi chiamare UNO");
             }
-        //}
+
 
     }
 

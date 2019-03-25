@@ -60,11 +60,11 @@ public class GameController extends UnicastRemoteObject implements GameControlle
             StatusRegistry.getInstance().setCalledOnePlayer(null);
         }
         if (!isMyTurn(player)) {
-            GameUIController.getInstance().showDialog("Non è ancora il tuo turno!");
+            GameUIController.getInstance().showDialog("It's not your turn yet!");
             return;
         }
         if (isMePlayer(player) && !isValidCard(player, card)) {
-            GameUIController.getInstance().showDialog("Non puoi giocare questa carta!");
+            GameUIController.getInstance().showDialog("You can't play this card!");
             GameUIController.getInstance().gridColorChoose.setVisible(false);
             return;
         }
@@ -167,7 +167,7 @@ public class GameController extends UnicastRemoteObject implements GameControlle
             StatusRegistry.getInstance().setCalledOnePlayer(null);
         }
         if (!isMyTurn(player)) {
-            GameUIController.getInstance().showDialog("Non è ancora il tuo turno!");
+            GameUIController.getInstance().showDialog("It's not your turn yet!");
             return;
         }
         stopTimer();
